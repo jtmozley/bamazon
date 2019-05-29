@@ -1,6 +1,8 @@
 var inquirer = require("inquirer");
 var mysql = require("mysql");
 
+var query;
+
 var connection = mysql.createConnection({
   host: "localhost",
 
@@ -36,15 +38,43 @@ inquirer
   .then(function(response) {
     switch (response.mainMenu) {
       case "View Products for Sale":
+        viewProd();
         break;
       case "View Low Inventory":
+        lowInv();
         break;
       case "Add to Inventory":
+        addInv();
         break;
       case "Add New Product":
+        newProd();
         break;
 
       default:
         break;
     }
   });
+
+function viewProd() {
+  query = "SELECT * FROM bamazon.products";
+  connection.query(query, function(err, res) {
+    console.table(res);
+  });
+}
+
+function lowInv() {
+  query = "SELECT * FROM bamazon.products";
+  connection.query(query, function(err, res) {
+    for (let i = 1; i < res.length; i++) {
+      var element = res[i];
+      if (element.stock_quantity <= 5) {
+        console.table(element);
+      }
+    }
+  });
+}
+
+function addInv() {
+    
+}
+function newProd(params) {}
